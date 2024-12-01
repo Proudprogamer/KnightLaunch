@@ -23,5 +23,5 @@ A **React-based token launchpad** built on the **Solana blockchain**. This proje
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/solana-token-launchpad.git
-   cd solana-token-launchpad
+   https://github.com/Proudprogamer/KnightLaunch.git
+   cd KnightLaunch
