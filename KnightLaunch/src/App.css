@@ -1,15 +1,17 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
 #root {
-  margin: 0 auto;
-  text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-.inputText {
-  padding-top: 20px;
-  padding-bottom: 20px;
-  padding-left: 10px;
-  width: 300px;
-}
-
-.btn {
-  padding: 20px;
+.main-content {
+  flex-grow: 1;
+  overflow-y: auto;
 }

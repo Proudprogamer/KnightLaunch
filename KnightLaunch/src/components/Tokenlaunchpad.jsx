@@ -1,13 +1,12 @@
 import React from "react";
 import { Keypair, SystemProgram, Transaction } from "@solana/web3.js";
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
-import { MINT_SIZE, TOKEN_2022_PROGRAM_ID, createMintToInstruction, createAssociatedTokenAccountInstruction, getMintLen, createInitializeMetadataPointerInstruction, createInitializeMintInstruction, TYPE_SIZE, LENGTH_SIZE, ExtensionType, mintTo, getOrCreateAssociatedTokenAccount, getAssociatedTokenAddressSync } from "@solana/spl-token"
+import { MINT_SIZE, TOKEN_2022_PROGRAM_ID, createMintToInstruction, createAssociatedTokenAccountInstruction, getMintLen, createInitializeMetadataPointerInstruction, createInitializeMintInstruction, TYPE_SIZE, LENGTH_SIZE, ExtensionType, mintTo, getOrCreateAssociatedTokenAccount, getAssociatedTokenAddressSync } from "@solana/spl-token";
 import { createInitializeInstruction, pack } from '@solana/spl-token-metadata';
-
+import { BatInput } from './BatInput';
+import { BatButton } from './BatButton';
 
 export function TokenLaunchpad() {
-
-    
     const { connection } = useConnection();
     const wallet = useWallet();
 
@@ -57,15 +56,12 @@ export function TokenLaunchpad() {
 
         await wallet.sendTransaction(transaction, connection);
 
-        console.log(`Token mint created at ${mintKeypair.publicKey.toBase58()}`);
         const associatedToken = getAssociatedTokenAddressSync(
             mintKeypair.publicKey,
             wallet.publicKey,
             false,
             TOKEN_2022_PROGRAM_ID,
         );
-
-        console.log(associatedToken.toBase58());
 
         const transaction2 = new Transaction().add(
             createAssociatedTokenAccountInstruction(
@@ -84,22 +80,47 @@ export function TokenLaunchpad() {
         );
 
         await wallet.sendTransaction(transaction3, connection);
-
-        console.log("Minted!")
     }
 
-    return  <div style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column'
-    }}>
-        <h1>Solana Token Launchpad</h1>
-        <input id="name" className='inputText' type='text' placeholder='Name'></input> <br />
-        <input id="symbol" className='inputText' type='text' placeholder='Symbol'></input> <br />
-        <input id="image" className='inputText' type='text' placeholder='Image URL'></input> <br />
-        <input id="initialSupply" className='inputText' type='text' placeholder='Initial Supply'></input> <br />
-        <button onClick={createToken} className='btn'>Create a token</button>
-    </div>
+    return (
+        <div className="h-screen bg-gradient-to-b from-gray-900 to-gray-800 flex justify-center items-center p-4">
+            <div className="max-w-md w-full bg-gray-800 rounded-2xl shadow-2xl p-8 border-2 border-yellow-500 mt-[-70px]">
+                <div className="flex items-center justify-center mb-8">
+                </div>
+                
+                <h1 className="text-3xl font-bold text-center mb-8 text-yellow-500">
+                    Knight Launch
+                </h1>
+                
+                <div className="space-y-6">
+                    <BatInput
+                        id="name"
+                        label="Token Name"
+                        type="text"
+                        placeholder="Enter token name"
+                    />
+                    
+                    <BatInput
+                        id="symbol"
+                        label="Token Symbol"
+                        type="text"
+                        placeholder="Enter token symbol"
+                    />
+                    
+                    <BatInput
+                        id="initialSupply"
+                        label="Initial Supply"
+                        type="text"
+                        placeholder="Enter initial supply"
+                    />
+                    
+                    <div className="flex justify-center mt-8">
+                        <BatButton onClick={createToken}>
+                            Forge Token
+                        </BatButton>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 }
